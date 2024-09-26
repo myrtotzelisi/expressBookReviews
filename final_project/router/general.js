@@ -40,8 +40,14 @@ public_users.get('/author/:author',function (req, res) {
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
-});
+  const title = req.params.title;
+  let book_title = []
+  const keys = Object.keys(books);//Obtain all the keys for the ‘books’ object.
+  for (let i = 0; i < keys.length; i++ ) {
+    if (books[keys[i]].title === title) {
+        book_title.push(books[keys[i]]);
+    }}
+  return res.status(200).json(book_title);});
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {

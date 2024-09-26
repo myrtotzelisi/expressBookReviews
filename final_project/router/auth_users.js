@@ -29,7 +29,7 @@ regd_users.post("/login", (req,res) => {
     let accessToken = jwt.sign({
       data: password
     }, 'fingerprint_customer', { expiresIn: 60 * 60 });
-    
+
     req.session.authorization = {
       accessToken, username
     };
@@ -41,7 +41,14 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    const isbn = parseInt(req.params.isbn);
+    let book_isbn = books[isbn]; 
+    const newReview = req.query.review;
+    let user = req.session.authorization['username'];
+    // Directly add or update the review for this user. The reviews object stores each user's review, where the username is the key and the review message is the value.
+    book_isbn.reviews[user] = newReview;
+
+  return res.status(200).json({message: "Review submitted successfully", review: book_isbn.reviews[user]});
 });
 
 module.exports.authenticated = regd_users;
